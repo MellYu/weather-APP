@@ -1,0 +1,24 @@
+{{#each this}}
+<li class="timeWeather">
+    <p class="timeWeather__time">{{localTime}}</p>
+    <p class="timeWeather__temp">
+        <img src="http://openweathermap.org/img/wn/{{weather}}@2x.png" alt="" class="timeWeather__temp-icon">
+        <span class="timeWeather__temperature">
+            {{temperature}} &#176;</span>
+    </p>
+    <ul class="timeWeather__data">
+        <li class="timeWeather__item">
+            <p class="timeWeather__pressure">
+                {{pressure}}mm</p>
+        </li>
+        <li class="timeWeather__item">
+            <p class="timeWeather__humidity">
+                {{humidity}}%</p>
+        </li>
+        <li class="timeWeather__item">
+            <p class="timeWeather__wind">
+                {{wind}} m/s</p>
+        </li>
+    </ul>
+</li>
+{{/each}}

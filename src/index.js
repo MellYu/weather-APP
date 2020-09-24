@@ -1,26 +1,28 @@
 import './sass/main.scss';
+import { getByGeolocation } from './js/geolocationFunc';
+import { defaultCity } from './js/defaultCity';
+import './js/input';
 import './js/commentSection.js';
-import './js/input.js';
+import './js/bookmarks';
+import './js/switchButtons';
+import { preloaderOn } from './js/preloader';
 
-import './js/slick';
-import {defaultCity} from './js/defaultCity.js';
-import {handleInput} from './js/input.js';
-import {getByGeolocation} from './js/geolocationFunc.js';
-
-function getGeolocation(){
-    return new Promise((getByGeolocation, defaultCity)=>{
-        navigator.geolocation.getCurrentPosition(getByGeolocation,defaultCity);
-    })
+function getGeo() {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
 }
 
-getGeolocation().then(location=>{
+getGeo()
+  .then(location => {
+    document.getElementById('main-id').classList.remove('main-section-none');
     const lat = location.coords.latitude;
     const lon = location.coords.longitude;
-    getByGeolocation({lat, lon});
-    document.body.classList.add('.weather__byGeo');
-}).catch(error=>{
-    console.log(error);
-});
-
-defaultCity();
-handleInput();
+    getByGeolocation({ lat, lon });
+    preloaderOn();
+  })
+  .catch(error => {
+    document.getElementById('main-id').classList.remove('main-section-none');
+    preloaderOn();
+    defaultCity();
+  });

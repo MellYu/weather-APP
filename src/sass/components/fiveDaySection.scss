@@ -1,0 +1,164 @@
+.five-day-section { 
+  position: relative;
+  .container {
+    width: 280px;
+    margin: 0 auto;
+    padding-top: 36px;
+    background-color: rgba(15, 29, 48, 0.8);
+    border-radius: 35px;
+    font-size: 18px;
+
+    @include tablet-media {
+      width: 608px;
+    }
+    @include desktop-media {
+      margin-top: 20px;
+      width: 1060px;
+    }
+  }
+  &__list {
+    list-style: none;
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 16px;
+    @include tablet-media {
+      margin-bottom: 32px;
+    }
+    @include desktop-media {
+      // margin-bottom: 26px;
+    }
+  }
+  &__item {
+    > * {
+      pointer-events: none;
+    }
+    // width: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &:hover {
+      opacity: 0.7;
+    }
+    cursor: pointer;
+  }
+  &__min-max-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 23px;
+  }
+  &__day {
+    color: $day-color;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    margin-bottom: 18px;
+    @include tablet-media {
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+    @include desktop-media {
+      font-size: 18px;
+    }
+  }
+  &__date {
+    font-size: 16px;
+    letter-spacing: 0.03em;
+    color: $main-color;
+    @include tablet-media {
+      font-size: 18px;
+    }
+    @include desktop-media {
+      font-size: 25px;
+    }
+  }
+  &__button {
+    margin-bottom: 30px;
+    background-color: transparent;
+    border: 0;
+    font-size: 14px;
+    color: $button-color;
+    text-decoration-line: underline;
+  }
+}
+
+.five-day-section .min-max-container {
+  &__name {
+    color: $day-color;
+  }
+  &__temperature {
+    color: $orange-color;
+    font-size: 25px;
+  }
+}
+.schedule {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  margin-bottom: 50px;
+  @include tablet-media {
+    margin-bottom: 60px;
+  }
+  @include desktop-media {
+    margin-bottom: 66px;
+  }
+
+  &__btn {
+    outline: none;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    color: $orange-color;
+    text-align: center;
+    text-decoration: underline;
+    background-color: initial;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+.ellipse {
+  margin-left: 10px;
+  cursor: pointer;
+  transform: rotate(0deg);
+  transition: transform 0.5s linear;
+}
+.min-max-container__temperature {
+  display: flex;
+  flex-direction: row;
+}
+
+.buttons{
+  display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 255px;
+    left: 110px;
+}
+
+.five-day-section-prev__btn{
+  font-size: 36px;
+    color: white;
+    background: none;
+    border: none;
+    margin-right: 45px;
+
+    &:active{
+      outline: none;
+    }
+    &:focus{
+      outline: none;
+    }
+}
+
+.five-day-section-next__btn{
+  font-size: 36px;
+    color: white;
+    background: none;
+    border: none;
+    &:active{
+      outline: none !important;
+    }
+    &:focus{
+      outline: none !important;
+    }
+}

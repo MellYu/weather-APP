@@ -1,21 +1,27 @@
 import refs from './refs';
+import { cityValidationAddBookmark } from './cityValidation';
+import { getCarusel } from './temp/slick.js';
+import forecastData from './fetchWeatherData.js';
+import allForOneDay from './allForOneDay';
+import allForFiveDay from './allForFiveDay';
+import get5dayobj from './create5dayObj';
+import { preloaderOn } from './preloader';
 
 export let bookmarks = [];
 
 const exampleTemplate = bookmark => {
-  return `<li class="bookmarks__item">${bookmark}<svg id="close"
-  xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-  <path d="M0 0h24v24H0z" fill="none"/>
-</svg></li>`;
+  return `<li class="bookmarks__item">${bookmark}<button class="bookmarkcCloseBtn"></button></li>`;
 };
 
-export const downloadBookmarks = () => {
+const downloadBookmarks = () => {
   if (localStorage.getItem('city')) {
     bookmarks = JSON.parse(localStorage.getItem('city'));
     const bookmarksTemplate = bookmarks
       .map(bookmark => exampleTemplate(bookmark))
       .map(item => refs.bookmarkRef.insertAdjacentHTML('beforeend', item));
+  }
+  if (bookmarks.length >= 2) {
+    getCarusel('.bookmarks__list');
   }
 };
 
@@ -23,6 +29,45 @@ export const updateBookmarks = city => {
   if (!bookmarks.includes(city)) {
     bookmarks.push(city);
     localStorage.setItem('city', JSON.stringify(bookmarks));
+
     refs.bookmarkRef.insertAdjacentHTML('beforeend', exampleTemplate(city));
   }
 };
+
+refs.bookmarkBtnRef.addEventListener('click', () => {
+  const searchValue = refs.inputRef.search.value;
+  cityValidationAddBookmark(searchValue);
+  // location.reload();
+  refs.inputRef.search.value = '';
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  downloadBookmarks();
+
+  refs.bookmarkRef.addEventListener('click', e => {
+    if (Object.values(e.target.classList).includes('bookmarkcCloseBtn')) {
+      e.target.parentElement.remove();
+      const value = e.target.parentElement.textContent;
+      bookmarks = JSON.parse(localStorage.getItem('city'));
+      bookmarks.map(el => {
+        if (value === el) {
+          const index = bookmarks.indexOf(el);
+          bookmarks.splice(index, 1);
+          localStorage.setItem('city', JSON.stringify(bookmarks));
+        }
+      });
+    }
+    if (Object.values(e.target.classList).includes('bookmarks__item')) {
+      preloaderOn();
+      const searchValue = e.target.textContent;
+      forecastData.getForecast(searchValue).then(city => {
+        allForOneDay(city);
+      });
+      forecastData.getForecastFiveDays(searchValue).then(city => {
+        let objOf5day = get5dayobj(city);
+        allForFiveDay(objOf5day);
+        // getCaruselInput();
+      });
+    }
+  });
+});
